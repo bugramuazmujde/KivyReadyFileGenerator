@@ -11,7 +11,6 @@ Builder.load_file("GeneratorView/BottomView/kv/bottom_box.kv")
 class BottomBox(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.rgba = None
 
     def add_select_widget_properties_box_to_widget(self, properties):
         self.clear_widgets(self.children)
@@ -27,7 +26,8 @@ class BottomBox(BoxLayout):
             self.children[0].add_widget(clr_picker)
 
     def on_color(self, value, color):
-        self.rgba = list(color)
+        len_properties = len(self.parent.children[1].children[0].children[1].children[0].children[0].children[0].children)
+        self.parent.children[1].children[0].children[1].children[0].children[0].children[0].children[len_properties - 1].children[0].children[0].text = str(color)
 
     def remover_color_palette_from_page(self):
         if self.children:

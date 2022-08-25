@@ -10,12 +10,13 @@ Builder.load_file("GeneratorView/BottomBar/kv/bottom_bar.kv")
 class BottomBar(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.add_widget(BoxLayout())
         build_button = Button(text="BUILD", size_hint=(.3, 1))
         build_button.bind(on_press=self.build)
         generate_button = Button(text="GENERATE", size_hint=(.3, 1))
         generate_button.bind(on_press=self.generate)
+
         self.add_widget(build_button)
+        self.add_widget(BoxLayout())
         self.add_widget(generate_button)
 
     def generate(self, value, build=False):
@@ -31,8 +32,11 @@ class BottomBar(BoxLayout):
 
     def get_selected_properties(self):
         selected_properties = {}
+        page_index = 0
+        if len(self.parent.children[1].children[0].children) > 1:
+            page_index = 1
         if self.parent.children[1].children:
-            for child in self.parent.children[1].children[0].children[0].children[0].children[0].children[0].children:
+            for child in self.parent.children[1].children[0].children[page_index].children[0].children[0].children[0].children:
                 if child.children[3].children[0].active:
                     if child.children[2].children[0].active:
                         selected_properties[child.children[4].children[0].text] = {

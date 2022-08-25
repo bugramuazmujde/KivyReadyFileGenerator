@@ -46,27 +46,30 @@ class KivyReadyFileService:
         self.write_a_line_to_kv(
             "<" + self.parser_service.get_class_name() + ">"
         )
-        build_lines = [
+        lines = [
             "class " + self.parser_service.get_class_name() + "(" + self.kfr_model.inheritance_class + "):",
             " " * self.spaces + "def __init__(self, **kwargs):",
             " " * (self.spaces * 2) + "super().__init__(**kwargs)"
         ]
-        for line in build_lines:
+        for line in lines:
             self.write_a_line_to_py(line)
 
     def add_properties_to_files(self):
         for property_name in self.kfr_model.property_dict:
-            for file_name in self.kfr_model.property_dict[property_name]:
-                if file_name == "kv":
-                    self.write_a_line_to_kv(
-                        " " * self.spaces + property_name + ": " + self.kfr_model.property_dict[property_name][file_name]
-                    )
-                else:
-                    self.write_a_line_to_py(
-                        " " * (self.spaces * 2) + "self." + property_name + " = " + self.kfr_model.property_dict[
-                            property_name
-                        ][file_name]
-                    )
+            if property_name == "canvas_color":
+                self.add_canvas_to_kv(self.kfr_model.property_dict[property_name]["kv"])
+            else:
+                for file_name in self.kfr_model.property_dict[property_name]:
+                    if file_name == "kv":
+                        self.write_a_line_to_kv(
+                            " " * self.spaces + property_name + ": " + self.kfr_model.property_dict[property_name][file_name]
+                        )
+                    else:
+                        self.write_a_line_to_py(
+                            " " * (self.spaces * 2) + "self." + property_name + " = " + self.kfr_model.property_dict[
+                                property_name
+                            ][file_name]
+                        )
 
     def write_a_line_to_py(self, line):
         with open(self.py_path, "a") as py_file:
@@ -105,3 +108,15 @@ class KivyReadyFileService:
         ]
         for line in build_lines:
             self.write_a_line_to_py(line)
+
+    def add_canvas_to_kv(self, value):
+        lines = [
+            " " * self.spaces + "canvas.before:",
+            " " * (self.spaces * 2) + "Color:",
+            " " * (self.spaces * 3) + "rgba: " + value,
+            " " * (self.spaces * 2) + "Rectangle:",
+            " " * (self.spaces * 3) + "size: self.size",
+            " " * (self.spaces * 3) + "pos: self.pos"
+        ]
+        for line in lines:
+            self.write_a_line_to_kv(line)
