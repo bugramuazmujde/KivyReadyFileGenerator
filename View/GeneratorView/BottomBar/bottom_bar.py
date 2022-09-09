@@ -14,8 +14,11 @@ class BottomBar(BoxLayout):
         build_button.bind(on_press=self.build)
         generate_button = Button(text="GENERATE", size_hint=(.3, 1))
         generate_button.bind(on_press=self.generate)
+        choose_view_button = Button(text="CHOOSE VIEW", size_hint=(.3, 1))
+        choose_view_button.bind(on_press=self.change_view_to_choose)
 
         self.add_widget(build_button)
+        self.add_widget(choose_view_button)
         self.add_widget(BoxLayout())
         self.add_widget(generate_button)
 
@@ -48,3 +51,6 @@ class BottomBar(BoxLayout):
                         }
             return selected_properties
         return []
+
+    def change_view_to_choose(self, value):
+        self.parent.parent.change_view_to_choose()
