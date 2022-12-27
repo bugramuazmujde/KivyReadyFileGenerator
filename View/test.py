@@ -1,18 +1,22 @@
-from kivy.uix.anchorlayout import AnchorLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.filechooser import FileChooser
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
-from kivy.uix.popup import Popup
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.textinput import TextInput
+from pathlib import Path
+import getpass
 
+def get_lst_writable_linux_disks():
+    this_user = getpass.getuser()
 
+    lst_available_linux_disks = [str(Path.home())]
+    with open('/proc/mounts', 'r') as f:
+        data = f.readlines()
 
-class Test(Popup):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        pass
+    for line in data:
+        item = line.split(' ')
+        mount_point = item[1]
+        fs_type = item[2]
+        options = item[3]
+        if mount_point.startswith('/mnt') or (mount_point.startswith(f'/media/{this_user}') and fs_type != 'vfat' and 'rw' in options):
+            lst_available_linux_disks.append(mount_point)
+
+    return lst_available_linux_disks
+
+print(get_lst_writable_linux_disks())
 

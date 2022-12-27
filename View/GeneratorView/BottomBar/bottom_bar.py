@@ -14,8 +14,10 @@ class BottomBar(BoxLayout):
         build_button.bind(on_press=self.build)
         generate_button = Button(text="GENERATE", size_hint=(.3, 1))
         generate_button.bind(on_press=self.generate)
-
+        btn = Button(text="BUGRA")
+        btn.bind(on_press=self.bugra)
         self.add_widget(build_button)
+        self.add_widget(btn)
         self.add_widget(BoxLayout())
         self.add_widget(generate_button)
 
@@ -48,3 +50,7 @@ class BottomBar(BoxLayout):
                         }
             return selected_properties
         return []
+
+    def bugra(self, value):
+        if value.text == "BUGRA":
+            print("asdasda")

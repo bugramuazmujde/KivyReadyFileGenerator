@@ -1,9 +1,13 @@
+import os
+if os.name == "nt":
+    import win32api
+    drivers = win32api.GetLogicalDriveStrings()
+    drivers = drivers.split('\000')[:-1]
+elif os.name == "posix":
+    drivers = ["/"]
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
-import win32api
 from kivy.uix.button import Button
-drivers = win32api.GetLogicalDriveStrings()
-drivers = drivers.split('\000')[:-1]
 Builder.load_file("SelectFolderView/kv/driver_buttons.kv")
 
 
@@ -19,7 +23,10 @@ class DriverButtons(BoxLayout):
             self.add_widget(driver_btn)
 
     def get_driver_name(self, value):
-        if value.text == "C":
-            self.parent.children[1].path = "C:\\Users"
+        if os.name == "nt":
+            if value.text == "C":
+                self.parent.children[1].path = "C:\\Users"
+            else:
+                self.parent.children[1].path = value.text + ":"
         else:
-            self.parent.children[1].path = value.text + ":"
+            self.parent.children[1].path = value.text
