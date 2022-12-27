@@ -11,5 +11,4 @@ Builder.load_file("GeneratorView/BottomView/kv/property_box_parent_grid.kv")
 class PropertyBoxParentGrid(GridLayout):
     def __init__(self, properties, **kwargs):
         super().__init__(**kwargs)
-        self.cols = 1
         self.add_widget(PropertyBoxScrollView(properties))

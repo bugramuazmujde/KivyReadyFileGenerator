@@ -13,10 +13,14 @@ class KFRG(AnchorLayout):
         self.add_widget(FileChooser())
         self.selected_path = None
 
-    def change_view(self, selected_path):
+    def change_view(self, selected_path=None):
         self.clear_widgets(self.children)
         self.add_widget(GeneratorViewMainBox())
         self.selected_path = selected_path
+
+    def change_view_to_choose(self):
+        self.clear_widgets(self.children)
+        self.add_widget(FileChooser())
 
 
 class KFRGApp(App):
